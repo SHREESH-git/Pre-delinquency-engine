@@ -1,0 +1,25 @@
+COLUMNS: ['customer_id', 'month', 'customer_segment', 'region_tier', 'product_type', 'active_products_count', 'credit_card_utilization', 'total_monthly_obligation', 'emi_amount', 'days_to_emi', 'emi_to_income_ratio', 'salary_delay_days', 'weekly_balance_change_pct', 'atm_withdrawal_amount', 'monthly_income', 'risk_level_latent', 'loan_default_observed']
+
+customer_id: CUST0000000
+month: 2024-01
+customer_segment: salaried
+region_tier: tier_3
+product_type: credit_card
+active_products_count: 2
+credit_card_utilization: 0.6525868905812269
+total_monthly_obligation: 54470.55945311176
+emi_amount: 50220
+days_to_emi: 17
+emi_to_income_ratio: 0.3855129425492062
+salary_delay_days: 4
+weekly_balance_change_pct: -9.691232585562965
+atm_withdrawal_amount: 26059.642677575368
+monthly_income: 130268
+risk_level_latent: 1
+loan_default_observed: 0
+
+UNIQUE VALUES:
+product_type: ['credit_card', 'bnpl', 'personal_loan']
+customer_segment: ['salaried', 'self_employed']
+region_tier: ['tier_3', 'tier_1', 'tier_2']
+risk_level_latent: [1, 0, 3, 2]

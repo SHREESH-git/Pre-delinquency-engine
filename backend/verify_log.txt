@@ -1,0 +1,14 @@
+Loading data from D:\Games\Frontend\content_backup (2)\content_backup\content\financial_stress_full_bank_grade_dataset.csv
+
+Analyzing Customer: CUST0000001
+History Length: 6 months
+
+--- Feature Verification ---
+Month: 2024-06
+Manual 5m Mean: 0.5144
+Feature Mean (stored as _3m): 0.5144
+✅ SUCCESS: Feature matches 5-month rolling mean.
+LSTM Sequence Shape Check: We expect (... , 3, 15)
+
+--- Prediction Verification ---
+New Prediction PD: 0.8233

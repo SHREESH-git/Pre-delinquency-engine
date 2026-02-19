@@ -1,0 +1,22 @@
+INFO:analytics:Loaded full dataset: 90,000 records
+INFO:analytics:Stratified sample: 1,000 records across 3 categories
+Loading data from D:\Games\Frontend\content_backup (2)\content_backup\content\financial_stress_full_bank_grade_dataset.csv
+
+Analyzing Customer: CUST0000001
+History Length: 6 months
+
+--- Feature Verification ---
+Month: 2024-06
+Manual 6m Mean: 0.5144
+Feature Mean (stored as _3m): 0.5144
+Traceback (most recent call last):
+  File "D:\Games\Frontend\backend\verify_rolling_fix.py", line 81, in <module>
+    verify_fix()
+    ~~~~~~~~~~^^
+  File "D:\Games\Frontend\backend\verify_rolling_fix.py", line 53, in verify_fix
+    print("\u2705 SUCCESS: Feature matches 6-month rolling mean.")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
