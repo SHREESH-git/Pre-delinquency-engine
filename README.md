@@ -36,6 +36,7 @@ Traditional banking interventions are often "too little, too late," occurring on
 * 📈 **Next Month PD Prediction:**
 * 💰 **Expected Loss = PD × LGD × EAD**
 * 🧊 **Cold-Start Customer Handling:**
+* 📊 **SHAP Explainability**
 * ⚡ **FastAPI Real-time Scoring:**
 
 ---
