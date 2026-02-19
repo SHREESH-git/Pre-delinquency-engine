@@ -20,23 +20,23 @@ def engineer_features(df_raw):
         "monthly_income"
     ]
 
-    # ======================================================
+    
     # LAG FEATURES (works for 2+ months)
-    # ======================================================
+    
     for col in NUMERIC_COLS:
         df[f"{col}_lag1"] = df.groupby("customer_id")[col].shift(1)
         df[f"{col}_lag2"] = df.groupby("customer_id")[col].shift(2)
 
-    # ======================================================
+    
     # DELTA FEATURES (works if lag exists)
-    # ======================================================
+    
     for col in NUMERIC_COLS:
         df[f"{col}_delta_1"] = df[col] - df[f"{col}_lag1"]
         df[f"{col}_delta_2"] = df[f"{col}_lag1"] - df[f"{col}_lag2"]
 
-    # ======================================================
+    
     # VOLATILITY (only if >=2 months)
-    # ======================================================
+    
     VOL_COLS = [
         "credit_card_utilization",
         "weekly_balance_change_pct",
@@ -51,9 +51,9 @@ def engineer_features(df_raw):
               .reset_index(level=0, drop=True)
         )
 
-    # ======================================================
+    
     # ROLLING FEATURES (min_periods=1 → safe)
-    # ======================================================
+    
     ROLLING_COLS = [
         "credit_card_utilization",
         "monthly_income",
@@ -82,9 +82,9 @@ def engineer_features(df_raw):
              .reset_index(level=0, drop=True)
         )
 
-    # ======================================================
+    
     # PERSISTENCE FLAGS (safe version)
-    # ======================================================
+    
     df["emi_high_persist_3m"] = (
         (df["emi_to_income_ratio"] > 0.40)
         .groupby(df["customer_id"])
@@ -115,9 +115,9 @@ def engineer_features(df_raw):
         .astype(int)
     )
 
-    # ======================================================
+    
     # FILL REMAINING NaNs SAFELY
-    # ======================================================
+    
     df = df.fillna(0)
 
     return df

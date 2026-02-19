@@ -8,9 +8,9 @@ from feature_engineering import engineer_features
 from predictor import prepare_inputs, predict_pd
 from risk_engine import expected_loss, risk_bucket
 
-# ---------------------------------------------------
+# 
 # INIT APP
-# ---------------------------------------------------
+# 
 app = FastAPI(
     title="Pre-Delinquency Intervention Engine",
     version="1.0"
@@ -20,9 +20,9 @@ app = FastAPI(
 models = load_models("content/models")
 
 
-# ---------------------------------------------------
+# 
 # INPUT SCHEMA
-# ---------------------------------------------------
+# 
 class MonthlyRecord(BaseModel):
     customer_id: str
     month: str
@@ -45,9 +45,9 @@ class CustomerHistory(BaseModel):
     records: List[MonthlyRecord]
 
 
-# ---------------------------------------------------
+# 
 # PREDICTION ENDPOINT
-# ---------------------------------------------------
+# 
 @app.post("/predict")
 def predict(customer_history: CustomerHistory):
 

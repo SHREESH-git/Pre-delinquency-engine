@@ -38,7 +38,7 @@ def load_models(model_path="models"):
     tree_feature_cols = joblib.load(os.path.join(model_path, "tree_feature_columns.pkl"))
     lstm_feature_cols = joblib.load(os.path.join(model_path, "lstm_feature_columns.pkl"))
 
-    # ---------- LOAD JSON ----------
+    #  LOAD JSON 
     with open(os.path.join(model_path, "hybrid_config.json")) as f:
         full_config = json.load(f)
 
@@ -50,7 +50,7 @@ def load_models(model_path="models"):
     el_cfg = full_config["expected_loss_engine"]
     portfolio_cfg = full_config["portfolio_assumption"]
 
-    # ---------- BUILD LSTM ----------
+    #  BUILD LSTM 
     lstm = LSTMModel(
         input_size=len(lstm_feature_cols),
         hidden_size=model_info["hidden_size"]

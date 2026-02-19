@@ -4,14 +4,14 @@ from feature_engineering import engineer_features
 from predictor import prepare_inputs, predict_pd
 from risk_engine import expected_loss, risk_bucket
 
-# ---------------------------------------------------
+
 # LOAD MODELS
-# ---------------------------------------------------
+
 models = load_models("content/models")
 
-# ---------------------------------------------------
+
 # LOAD RAW DATA (customer monthly history)
-# ---------------------------------------------------
+
 # df_raw = pd.read_csv("new_customer_data.csv")
 
 df_raw = pd.DataFrame([
@@ -51,14 +51,14 @@ df_raw = pd.DataFrame([
     }
 ])
 
-# ---------------------------------------------------
+
 # FEATURE ENGINEERING
-# ---------------------------------------------------
+
 df_engineered = engineer_features(df_raw)
 
-# ---------------------------------------------------
+
 # ONE HOT ENCODE (TREE NEEDS IT)
-# ---------------------------------------------------
+
 cat_cols = df_engineered.select_dtypes(include=["object"]).columns.tolist()
 
 df_engineered = pd.get_dummies(
@@ -67,14 +67,14 @@ df_engineered = pd.get_dummies(
     drop_first=True
 )
 
-# ---------------------------------------------------
+
 # PREPARE INPUTS
-# ---------------------------------------------------
+
 tree_input, lstm_input = prepare_inputs(models, df_engineered)
 
-# ---------------------------------------------------
+
 # PREDICT PD
-# ---------------------------------------------------
+
 pd_score = predict_pd(models, tree_input, lstm_input)
 
 print("Predicted PD:", pd_score)
@@ -107,9 +107,9 @@ bucket = risk_bucket(pd_score)
 print("Risk Bucket:", bucket)
 print("Expected Loss: ₹", round(el,2))
 
-# ===================================================
+
 # SHAP FOR FINAL ENSEMBLE (TREE + LSTM)
-# ===================================================
+
 
 import shap
 import matplotlib.pyplot as plt
@@ -118,7 +118,7 @@ import torch
 import pandas as pd
 
 
-# ---------- PREPARE TREE BACKGROUND (use all available rows, not just last row) ----------
+# PREPARE TREE BACKGROUND (use all available rows, not just last row) 
 # Rebuild a full tree-input frame from the engineered dataframe so SHAP background
 # sampling is representative. This avoids sampling from a single-row `tree_input`.
 tree_cols = models["tree_feature_cols"]
@@ -126,7 +126,7 @@ tree_input_all = df_engineered.reindex(columns=tree_cols, fill_value=0)
 tree_input = tree_input_all.iloc[[-1]]  # keep the single-row last record for printing/prediction
 
 
-# ---------- LSTM BASE INPUT (keep fixed for explanations) ----------
+#  LSTM BASE INPUT (keep fixed for explanations) 
 # prepare_inputs already returned a lstm input for the full history earlier — reuse it.
 # If not present, compute it now to be safe.
 if 'lstm_input_base' not in globals():
@@ -134,7 +134,7 @@ if 'lstm_input_base' not in globals():
     _, lstm_input_base = prepare_inputs(models, df_engineered)
 
 
-# ---------- ENSEMBLE WRAPPER (robust, vectorized) ----------
+#  ENSEMBLE WRAPPER (robust, vectorized) 
 def ensemble_predict(X):
     """
     Predict final calibrated PD for an array-like or DataFrame of tree features.
@@ -201,15 +201,15 @@ def ensemble_predict(X):
     return calibrated
 
 
-# ---------- BACKGROUND DATA (representative) ----------
+#  BACKGROUND DATA (representative) 
 background = tree_input_all.sample(n=min(50, len(tree_input_all)), random_state=42)
 
 
-# ---------- CREATE EXPLAINER ----------
+#  CREATE EXPLAINER 
 explainer = shap.KernelExplainer(ensemble_predict, background)
 
 
-# ---------- EXPLAIN LAST CUSTOMER ----------
+#  EXPLAIN LAST CUSTOMER 
 X_test = tree_input  # already a single-row DataFrame aligned to tree_cols
 
 shap_values = explainer.shap_values(X_test)
@@ -222,7 +222,7 @@ else:
 
 shap_sample = shap_arr[0] if shap_arr.ndim == 2 else shap_arr
 
-# ---------- BUILD IMPORTANCE TABLE (used by both plots) ----------
+#  BUILD IMPORTANCE TABLE (used by both plots) 
 importance = pd.DataFrame({
     "Feature": tree_cols,
     "SHAP_Value": shap_sample
@@ -231,7 +231,7 @@ importance["Impact"] = importance["SHAP_Value"].abs()
 importance = importance.sort_values("Impact", ascending=False)
 
 
-# ---------- MODERN WATERFALL (RESPONSIVE LAYOUT) ----------
+#  MODERN WATERFALL (RESPONSIVE LAYOUT) 
 
 # Build Explanation object
 exp = shap.Explanation(
@@ -308,7 +308,7 @@ except Exception as e:
 plt.show()
 
 
-# ---------- SECOND PLOT: HORIZONTAL BAR CHART WITH NUMERIC VALUES ----------
+#  SECOND PLOT: HORIZONTAL BAR CHART WITH NUMERIC VALUES 
 # Build an easily readable numeric plot of top SHAP contributions (signed values)
 top_n = 12
 importance_full = importance.copy()

@@ -2,9 +2,9 @@ import numpy as np
 import torch
 
 
-# =========================================================
+
 # PREPARE MODEL INPUTS
-# =========================================================
+
 def prepare_inputs(models, df):
 
     tree_cols = models["tree_feature_cols"]
@@ -12,11 +12,11 @@ def prepare_inputs(models, df):
     seq_len = models["seq_len"]
     scaler = models["scaler"]
 
-    # ---------------- TREE INPUT ----------------
+    #  TREE INPUT 
     df_tree = df.reindex(columns=tree_cols, fill_value=0)
     tree_input = df_tree.iloc[[-1]]  # last row only
 
-    # ---------------- LSTM INPUT ----------------
+    #  LSTM INPUT 
     df_lstm = df.reindex(columns=lstm_cols, fill_value=0)
 
     # If not enough history → PAD from top
@@ -35,9 +35,9 @@ def prepare_inputs(models, df):
     return tree_input, sequence_scaled
 
 
-# =========================================================
+
 # PREDICT PD
-# =========================================================
+
 def predict_pd(models, tree_input, lstm_input):
 
     xgb = models["xgb"]
@@ -53,7 +53,7 @@ def predict_pd(models, tree_input, lstm_input):
 
     config = models["config"]
 
-    # ---------------- TREE ENSEMBLE ----------------
+    #  TREE ENSEMBLE 
     px = xgb.predict_proba(tree_input)[:, 1]
     pl = lgb.predict_proba(tree_input)[:, 1]
     pc = cat.predict_proba(tree_input)[:, 1]
@@ -61,23 +61,23 @@ def predict_pd(models, tree_input, lstm_input):
     s = wx + wl + wc
     tree_pd = (wx * px + wl * pl + wc * pc) / s
 
-    # ---------------- LSTM ----------------
+    #  LSTM 
     device = next(lstm.parameters()).device
     tensor_input = torch.tensor(lstm_input, dtype=torch.float32).to(device)
 
     with torch.no_grad():
         lstm_pd = lstm(tensor_input).cpu().numpy()
 
-    # ---------------- HYBRID BLEND ----------------
+    #  HYBRID BLEND 
     blended = best_weight * tree_pd + (1 - best_weight) * lstm_pd
 
-    # ---------------- CALIBRATION ----------------
+    #  CALIBRATION 
     calibrated = calibrator.predict_proba(
         blended.reshape(-1, 1)
     )[:, 1]
 
 
-    # ------------------------------------------------------------
+    # 
     # USE BASE RATE ADJUSTMENT ONLY IF USING REAL WORLD PORTFOLIO:
     #   r = models["real_world_default_rate"]
     #   pd_floor = config.get("pd_floor", 0.01)
@@ -86,10 +86,10 @@ def predict_pd(models, tree_input, lstm_input):
     #   adjusted = (p * r) / (p * r + (1 - p) * (1 - r))
     #   adjusted = np.clip(adjusted, pd_floor, pd_cap)
     #   return adjusted
-    # ------------------------------------------------------------
+    # 
 
 
-    # ---------------- SAFETY FLOOR / CAP ----------------
+    #  SAFETY FLOOR / CAP 
     pd_floor = config.get("pd_floor")
     pd_cap = config.get("pd_cap")
 

@@ -6,20 +6,20 @@ def expected_loss(models, pd, emi, utilization, income,
     # Navigate correctly
     el_engine = config["expected_loss_engine"]
 
-    # ---------- EAD RULES ----------
+    #  EAD RULES 
     emi_mult = el_engine["ead_rules"]["emi_multiplier"]
     util_mult = el_engine["ead_rules"]["utilization_income_multiplier"]
 
     ead = emi * emi_mult + utilization * income * util_mult
 
-    # ---------- LGD RULES ----------
+    #  LGD RULES 
     base_lgd = el_engine["lgd_rules"]["base_lgd"]
     salary_add = el_engine["lgd_rules"]["salary_delay_add"]
     util_add = el_engine["lgd_rules"]["utilization_add"]
 
     lgd = base_lgd + salary_add * salary_flag + util_add * util_flag
 
-    # ---------- EXPECTED LOSS ----------
+    #  EXPECTED LOSS 
     el = pd * lgd * ead
 
     return el, lgd, ead
