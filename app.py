@@ -3,26 +3,26 @@ from pydantic import BaseModel
 from typing import List
 import pandas as pd
 
-from model_loader import load_models
-from feature_engineering import engineer_features
-from predictor import prepare_inputs, predict_pd
-from risk_engine import expected_loss, risk_bucket
+from PD_Model.model_loader import load_models
+from PD_Model.feature_engineering import engineer_features
+from PD_Model.predictor import prepare_inputs, predict_pd
+from PD_Model.risk_engine import expected_loss, risk_bucket
 
-# 
+
 # INIT APP
-# 
+ 
 app = FastAPI(
     title="Pre-Delinquency Intervention Engine",
     version="1.0"
 )
 
 # Load models once at startup
-models = load_models("content/models")
+models = load_models("PD_Model/content/models")
 
 
-# 
+
 # INPUT SCHEMA
-# 
+
 class MonthlyRecord(BaseModel):
     customer_id: str
     month: str
@@ -45,9 +45,9 @@ class CustomerHistory(BaseModel):
     records: List[MonthlyRecord]
 
 
-# 
+
 # PREDICTION ENDPOINT
-# 
+
 @app.post("/predict")
 def predict(customer_history: CustomerHistory):
 

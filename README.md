@@ -223,32 +223,35 @@ flowchart TD
 ## Project Structure
 ```bash
 EarlyShield/
-├── content/ 
-│   ├── models/ 
-│   │   ├── xgb_model.pkl
-│   │   ├── lgb_model.pkl
-│   │   ├── cat_model.cbm
-│   │   ├── lstm_model_state.pt
-│   │   ├── lstm_scaler.pkl
-│   │   ├── calibrator.pkl
-│   │   ├── tree_feature_columns.pkl
-│   │   ├── lstm_feature_columns.pkl
-│   │   └── hybrid_config.json
-│
-├── model_loader.py
-├── predictor.py
-├── feature_engineering.py
-├── risk_engine.py
-├── inference.py
 ├── app.py
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
-├── sample_data/
-│   ├── financial_stress_sample.csv
-│   └── feature_engineered_sample.csv
-└── notebook/
-    └── model_training.ipynb
+├── __init__.py
+└── PD_Model/
+    ├── content/ 
+    │   └── models/ 
+    │       ├── xgb_model.pkl
+    │       ├── lgb_model.pkl
+    │       ├── cat_model.cbm
+    │       ├── lstm_model_state.pt
+    │       ├── lstm_scaler.pkl
+    │       ├── calibrator.pkl
+    │       ├── tree_feature_columns.pkl
+    │       ├── lstm_feature_columns.pkl
+    │       └── hybrid_config.json
+    │
+    ├── notebook/
+    │   └── model_training.ipynb
+    ├── sample_data/
+    │   ├── financial_stress_sample.csv
+    │   └── feature_engineered_sample.csv
+    ├── shap_plots/
+    ├── feature_engineering.py
+    ├── inference.py
+    ├── model_loader.py
+    ├── predictor.py
+    └── risk_engine.py
 ```
 ---
 
@@ -256,19 +259,19 @@ EarlyShield/
 Due to file size limits, the full datasets are not included in this repository. 
 
 **Required Files:**
-1. **Raw Dataset:** `data/raw/financial_stress_full_bank_grade_dataset.csv`
-2. **Engineered Dataset:** `data/processed/feature_engineered_dataset.csv`
+1. **Raw Dataset:** `PD_Model/data/raw/financial_stress_full_bank_grade_dataset.csv`
+2. **Engineered Dataset:** `PD_Model/data/processed/feature_engineered_dataset.csv`
 
 > [!TIP]
-> **Sample Data Available**: You can find small sample datasets in the `sample_data/` directory to test the code immediately without downloading the full files.
+> **Sample Data Available**: You can find small sample datasets in the `PD_Model/sample_data/` directory to test the code immediately without downloading the full files.
 
 **Download Instructions:**
 - The datasets are hosted on google drive:
 1) financial_stress_full_bank_grade_dataset.csv: https://drive.google.com/uc?export=download&id=1ZSSO1zixr6jjDfGS_f4ipiMsF-0Yh6vH
 2) feature_engineered_dataset.csv: https://drive.google.com/uc?export=download&id=1XHJpCc6ACdNbzAwk9kgdCp5IERDV65eM
 .
-- Place the raw CSV in `data/raw/`.
-- Place the engineered CSV in `data/processed/`.
+- Place the raw CSV in `PD_Model/data/raw/`.
+- Place the engineered CSV in `PD_Model/data/processed/`.
 
 ---
 
@@ -276,7 +279,7 @@ Due to file size limits, the full datasets are not included in this repository.
 The pre-trained models are **not included** in the repository to keep it lightweight.
 
 **Required Model Files:**
-Place the following files in `content/models/`:
+Place the following files in `PD_Model/content/models/`:
 
 ## Model Download Links
 
@@ -338,7 +341,7 @@ response = requests.get(MODEL_URL)
 model = joblib.load(io.BytesIO(response.content))
 
 **Download Instructions:**
-- Ensure `content/models/hybrid_config.json` exists (included in repo).
+- Ensure `PD_Model/content/models/hybrid_config.json` exists (included in repo).
 ```
 ---
 

@@ -7,7 +7,7 @@ from risk_engine import expected_loss, risk_bucket
 
 # LOAD MODELS
 
-models = load_models("content/models")
+models = load_models("PD_Model/content/models")
 
 
 # LOAD RAW DATA (customer monthly history)
