@@ -1,50 +1,71 @@
-# Python
+# ------------------------------------------------------------------------------
+# SYSTEM & IDE
+# ------------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Node
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# IDE
-.idea/
+.ipynb_checkpoints/
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# ------------------------------------------------------------------------------
+# DATASETS (Large files ignored)
+# ------------------------------------------------------------------------------
+# Ignore CSVs inside notebook experiments
+notebook/**/*.csv
 
-# Logs
-*.log
+# Allow small sample data to be tracked
+!sample_data/
+!sample_data/**/*.csv
+
+# ------------------------------------------------------------------------------
+# MODELS (Artifacts ignored)
+# ------------------------------------------------------------------------------
+models/
+*.pkl
+*.pt
+*.cbm
+*.h5
+*.joblib
+*.onnx
+
+# Exception: Keep configuration files tracked
+!content/models/*.json
+
+# ------------------------------------------------------------------------------
+# SECRETS & CONFIG
+# ------------------------------------------------------------------------------
+.env
+.env.*
+*.secret
+credentials.json
+client_secrets.json
+
+# ------------------------------------------------------------------------------
+# GENERATED OUTPUTS
+# ------------------------------------------------------------------------------
+inspection_output.txt
+catboost_info/
+shap_*.png
+
+# ------------------------------------------------------------------------------
+# DEPENDENCIES
+# ------------------------------------------------------------------------------
+node_modules/
+venv/
+env/
+.venv/
+ENV/
+
+# ------------------------------------------------------------------------------
+# DATA
+# ------------------------------------------------------------------------------
+data/raw/
+data/processed/
+data/external/
+data/interim/
