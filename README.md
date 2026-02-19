@@ -198,9 +198,9 @@ flowchart TD
 ## Model Performance
 | Metric | Value | Status |
 |---|---|---|
-| Tree Holdout AUC | 0.825 | Strong Discrimination |
+| Tree Holdout AUC | 0.825 | High Discrimination |
 | Hybrid AUC | 0.82 – 0.83 | Stable Ensemble |
-| Calibration | Logistic | Calibrated PD |
+| Calibration | Logistic | Well-Calibrated PD |
 | Cold Start | Supported | Production Ready |
 
 ---
@@ -328,9 +328,12 @@ All models are hosted on Google Drive and loaded dynamically in the app.
 ### Usage Example
 
 ```python
-import requests, io, joblib
+import requests
+import io
+import joblib
 
 MODEL_URL = "PASTE_LINK_HERE"
+
 response = requests.get(MODEL_URL)
 model = joblib.load(io.BytesIO(response.content))
 
