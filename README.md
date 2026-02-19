@@ -264,8 +264,8 @@ Due to file size limits, the full datasets are not included in this repository.
 
 **Download Instructions:**
 - The datasets are hosted on google drive:
-- 1) financial_stress_full_bank_grade_dataset.csv: https://drive.google.com/uc?export=download&id=1ZSSO1zixr6jjDfGS_f4ipiMsF-0Yh6vH
-- 2) feature_engineered_dataset.csv: https://drive.google.com/uc?export=download&id=1XHJpCc6ACdNbzAwk9kgdCp5IERDV65eM
+1) financial_stress_full_bank_grade_dataset.csv: https://drive.google.com/uc?export=download&id=1ZSSO1zixr6jjDfGS_f4ipiMsF-0Yh6vH
+2) feature_engineered_dataset.csv: https://drive.google.com/uc?export=download&id=1XHJpCc6ACdNbzAwk9kgdCp5IERDV65eM
 .
 - Place the raw CSV in `data/raw/`.
 - Place the engineered CSV in `data/processed/`.
