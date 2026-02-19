@@ -203,16 +203,17 @@ flowchart TD
 ## 📁 Project Structure
 ```bash
 EarlyShield/
-├── models/ 
-│   ├── xgb_model.pkl
-│   ├── lgb_model.pkl
-│   ├── cat_model.cbm
-│   ├── lstm_model_state.pt
-│   ├── lstm_scaler.pkl
-│   ├── calibrator.pkl
-│   ├── tree_feature_columns.pkl
-│   ├── lstm_feature_columns.pkl
-│   └── hybrid_config.json
+├── content/ 
+│   ├── models/ 
+│   │   ├── xgb_model.pkl
+│   │   ├── lgb_model.pkl
+│   │   ├── cat_model.cbm
+│   │   ├── lstm_model_state.pt
+│   │   ├── lstm_scaler.pkl
+│   │   ├── calibrator.pkl
+│   │   ├── tree_feature_columns.pkl
+│   │   ├── lstm_feature_columns.pkl
+│   │   └── hybrid_config.json
 │
 ├── model_loader.py
 ├── predictor.py
@@ -220,8 +221,30 @@ EarlyShield/
 ├── risk_engine.py
 ├── inference.py
 ├── app.py
-└── notebook.ipynb
+├── requirements.txt
+├── .gitignore
+├── README.md
+├── sample_data/
+│   ├── financial_stress_sample.csv
+│   └── feature_engineered_sample.csv
+└── notebook/
+    └── model_training.ipynb
 ```
+
+
+## 📂 Data Setup
+Due to file size limits, the full datasets are not included in this repository. 
+
+**Required Files:**
+1. **Raw Dataset:** `notebook/financial_stress_full_bank_grade_dataset.csv`
+2. **Engineered Dataset:** `notebook/feature_engineered_dataset.csv`
+
+> [!TIP]
+> **Sample Data Available**: You can find small sample datasets in the `sample_data/` directory to test the code immediately without downloading the full files.
+
+**Download Instructions:**
+- Download the datasets from [INSERT_DATA_SOURCE_LINK_HERE].
+- Place the CSV files in the `notebook/` directory.
 
 ## 🚀 Getting Started
 1. Install Dependencies
