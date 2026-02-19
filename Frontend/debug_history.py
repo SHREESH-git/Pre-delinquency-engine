@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 import os
 
-# Add backend to path
+# Add backend to path g
 sys.path.append(os.path.join(os.getcwd(), "backend"))
 
 from backend.main import AnalyticsService, DATASET_PATH

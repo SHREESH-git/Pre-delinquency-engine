@@ -78,7 +78,7 @@ export function createRiskTrendChart(canvasId: string, data?: { labels: string[]
     const ctx = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!ctx) return;
 
-    // Clear existing chart
+    // Clear existing chart c
     const existingChart = Chart.getChart(ctx);
     if (existingChart) existingChart.destroy();
 
