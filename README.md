@@ -42,19 +42,61 @@ We utilize a two-pronged approach to capture both static snapshots and temporal 
 ## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-    A[Unified Data Ingestion] --> B[Feature Store]
-    B --> C[Feature Engineering]
-    C --> D{LSTM Raw Sequence Path}
-    D --> E[Tree Ensembles]
-    D --> F[LSTM Sequence Model]
-    E --> G[Adaptive Weighting]
-    F --> G
-    G --> H[Calibration & Validation]
-    H --> I[Risk Scoring Engine]
-    I --> J[Expected Loss Engine]
-    J --> K[FastAPI Serving]
-    K --> L[Explainability & Intervention]
+flowchart TD
+
+    Start((Start)) --> BC[Business and Compliance]
+    BC --> UDI[Unified Data Ingestion - Kafka]
+
+    UDI --> FE[Feature Engineering]
+    FE --> FS[Feature Store]
+
+    %% Hybrid Modeling
+    subgraph HM[Hybrid Modeling]
+        TM[Tree Models]
+        LSTM[LSTM Time Series]
+        CSH[Cold Start Handler]
+        ENS[Ensemble and Optuna]
+
+        TM --> CSH
+        LSTM --> CSH
+        CSH --> ENS
+    end
+
+    FS --> TM
+    FE --> LSTM
+
+    %% Model Quality Checks
+    subgraph MQC[Model Quality Checks]
+        VC[Validation and Calibration]
+        ST[Stress Testing]
+    end
+
+    ENS --> VC
+    ENS --> ST
+
+    VC --> MR[Model Registry]
+    ST --> MR
+
+    MR --> API[Model Serving API]
+
+    %% Risk Explanation Layer
+    subgraph REL[Risk Explanation Layer]
+        SHAP[Explainability SHAP]
+        RD[Risk Dashboard]
+    end
+
+    API --> SHAP
+    API --> RD
+
+    SHAP --> PIO[Personalized Intervention Optimizer]
+    RD --> PIO
+
+    PIO --> MDD[Monitoring and Drift Detection]
+    MDD --> End((End))
+
+    %% Continuous Learning Loop
+    MDD -. Continuous Learning .-> UDI
+    MDD -. Retraining .-> FE
 '''
 ```
 ---
