@@ -1,55 +1,61 @@
-# Python
+# ------------------------------------------------------------------------------
+# SYSTEM & IDE
+# ------------------------------------------------------------------------------
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.env
-.venv
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Jupyter Notebook
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# IDEs
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# OS
 .DS_Store
 Thumbs.db
+*.log
 
-# Project Specific
+# ------------------------------------------------------------------------------
+# DATASETS (Large files ignored)
+# ------------------------------------------------------------------------------
+# Ignore CSVs inside notebook experiments
+notebook/**/*.csv
+
+# Allow small sample data to be tracked
+!sample_data/
+!sample_data/**/*.csv
+
+# ------------------------------------------------------------------------------
+# MODELS (Artifacts ignored)
+# ------------------------------------------------------------------------------
+models/
+*.pkl
+*.pt
+*.cbm
+*.h5
+*.joblib
+*.onnx
+
+# Exception: Keep configuration files tracked
+!content/models/*.json
+
+# ------------------------------------------------------------------------------
+# SECRETS & CONFIG
+# ------------------------------------------------------------------------------
+.env
+.env.*
+*.secret
+credentials.json
+client_secrets.json
+
+# ------------------------------------------------------------------------------
+# GENERATED OUTPUTS
+# ------------------------------------------------------------------------------
 inspection_output.txt
 catboost_info/
-content/sample_data/
-notebook/*.csv
+shap_*.png
 
-# Generated Plots
-shap_top_features.png
-shap_waterfall.png
+venv/
+env/
+.venv/
 
-# Large Data (Explicitly ignore just in case)
-*.csv
-*.xlsx
-!content/models/*.json # Keep config files
-!sample_data/*.csv # Keep sample data
+data/raw/
+data/processed/
+data/external/
+data/interim/

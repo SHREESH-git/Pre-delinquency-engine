@@ -237,15 +237,37 @@ EarlyShield/
 Due to file size limits, the full datasets are not included in this repository. 
 
 **Required Files:**
-1. **Raw Dataset:** `notebook/financial_stress_full_bank_grade_dataset.csv`
-2. **Engineered Dataset:** `notebook/feature_engineered_dataset.csv`
+1. **Raw Dataset:** `data/raw/financial_stress_full_bank_grade_dataset.csv`
+2. **Engineered Dataset:** `data/processed/feature_engineered_dataset.csv`
 
 > [!TIP]
 > **Sample Data Available**: You can find small sample datasets in the `sample_data/` directory to test the code immediately without downloading the full files.
 
 **Download Instructions:**
 - Download the datasets from [INSERT_DATA_SOURCE_LINK_HERE].
-- Place the CSV files in the `notebook/` directory.
+- Place the raw CSV in `data/raw/`.
+- Place the engineered CSV in `data/processed/`.
+
+
+
+## 🤖 Model Setup
+The pre-trained models are **not included** in the repository to keep it lightweight.
+
+**Required Model Files:**
+Place the following files in `content/models/`:
+- `xgb_model.pkl`
+- `lgb_model.pkl`
+- `cat_model.cbm`
+- `lstm_model_state.pt`
+- `lstm_scaler.pkl`
+- `calibrator.pkl`
+- `tree_feature_columns.pkl`
+- `lstm_feature_columns.pkl`
+
+**Download Instructions:**
+- Download the model artifacts from [INSERT_MODEL_SOURCE_LINK_HERE].
+- Ensure `content/models/hybrid_config.json` exists (included in repo).
+
 
 ## 🚀 Getting Started
 1. Install Dependencies
