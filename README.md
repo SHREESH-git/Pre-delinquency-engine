@@ -59,59 +59,78 @@ We use a two-pronged approach:
 ```mermaid
 flowchart TD
 
-    Start((Start)) --> BC[Business and Compliance]
-    BC --> UDI[Unified Data Ingestion - Kafka]
+    %% ===== TOP CONTROL =====
+    A[RBAC IAM Audit] --> B[Compliance Engine]
+    B --> C[Kafka Ingestion]
+    C --> D[Data Router]
 
-    UDI --> FE[Feature Engineering]
-    FE --> FS[Feature Store]
+    %% ===== FEATURE LAYER =====
+    D --> E[Feature Pipeline]
+    E --> F[Feature Store]
 
-    %% Hybrid Modeling
+    %% ===== HYBRID MODELING =====
     subgraph HM[Hybrid Modeling]
-        TM[Tree Models]
-        LSTM[LSTM Time Series]
-        CSH[Cold Start Handler]
-        ENS[Ensemble and Optuna]
 
-        TM --> CSH
-        LSTM --> CSH
-        CSH --> ENS
+        direction LR
+        G[Tree Models]
+        H[LSTM Models]
+
+        G --> I[Cold Start]
+        H --> I
+        I --> J[Ensemble Tuning]
+
     end
 
-    FS --> TM
-    FE --> LSTM
+    F --> G
+    E --> H
 
-    %% Model Quality Checks
-    subgraph MQC[Model Quality Checks]
-        VC[Validation and Calibration]
-        ST[Stress Testing]
+    %% ===== QUALITY & SECURITY =====
+    subgraph QS[Quality & Security]
+
+        K[Validation]
+        L[Stress Tests]
+
     end
 
-    ENS --> VC
-    ENS --> ST
+    J --> K
+    J --> L
 
-    VC --> MR[Model Registry]
-    ST --> MR
+    K --> M[Model Registry]
+    L --> M
 
-    MR --> API[Model Serving API]
+    %% ===== DEPLOYMENT =====
+    M --> N[Kubernetes]
+    N --> O[Secure Gateway]
 
-    %% Risk Explanation Layer
-    subgraph REL[Risk Explanation Layer]
-        SHAP[Explainability SHAP]
-        RD[Risk Dashboard]
+    %% ===== EXPLAINABILITY =====
+    subgraph EX[Explainability]
+
+        P[SHAP]
+        Q[Dashboard]
+        R[Audit Logs]
+
     end
 
-    API --> SHAP
-    API --> RD
+    O --> P
+    O --> Q
+    O --> R
 
-    SHAP --> PIO[Personalized Intervention Optimizer]
-    RD --> PIO
+    %% ===== BUSINESS ACTION =====
+    P --> S[Risk Intervention]
+    Q --> S
 
-    PIO --> MDD[Monitoring and Drift Detection]
-    MDD --> End((End))
+    %% ===== MONITORING =====
+    S --> T[Monitoring]
+    T --> U[Alerts]
+    U --> V((End))
 
-    %% Continuous Learning Loop
-    MDD -. Continuous Learning .-> UDI
-    MDD -. Retraining .-> FE
+    %% ===== ORCHESTRATION =====
+    T --> W[Airflow Orchestrator]
+
+    %% ===== FEEDBACK LOOPS =====
+    T -. Feedback .-> D
+    T -. Retrain .-> E
+
 ```
 ---
 
@@ -347,8 +366,8 @@ Access the interactive API docs at: http://127.0.0.1:8000/docs
 ## Authors
 - Shreesh Jugade
 - Shreeyash Indulkar
-- Daksh Padmavat
 - Ayush Shevde
+- Daksh Padmavat
 - Aarya Pawar
 
 ---
