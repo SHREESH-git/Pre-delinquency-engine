@@ -61,24 +61,21 @@ flowchart TD
 
     %% ===== TOP CONTROL =====
     A[RBAC IAM Audit] --> B[Compliance Engine]
-    B --> C[Kafka Ingestion]
-    C --> D[Data Router]
+    B --> D[Streamlit Frontend]
 
-    %% ===== FEATURE LAYER =====
+    %% ===== DATA & FEATURE LAYER =====
     D --> E[Feature Pipeline]
-    E --> F[Feature Store]
+    E --> F[Feature Store / Local DB]
 
     %% ===== HYBRID MODELING =====
     subgraph HM[Hybrid Modeling]
-
         direction LR
         G[Tree Models]
         H[LSTM Models]
-
+        
         G --> I[Cold Start]
         H --> I
         I --> J[Ensemble Tuning]
-
     end
 
     F --> G
@@ -86,29 +83,25 @@ flowchart TD
 
     %% ===== QUALITY & SECURITY =====
     subgraph QS[Quality & Security]
-
         K[Validation]
         L[Stress Tests]
-
     end
 
     J --> K
     J --> L
 
-    K --> M[Model Registry]
+    K --> M[Model Registry / Pickle Store]
     L --> M
 
     %% ===== DEPLOYMENT =====
-    M --> N[Kubernetes]
-    N --> O[Secure Gateway]
+    M --> N[Local App Execution]
+    N --> O[Secure Local Gateway]
 
-    %% ===== EXPLAINABILITY =====
-    subgraph EX[Explainability]
-
-        P[SHAP]
-        Q[Dashboard]
-        R[Audit Logs]
-
+    %% ===== EXPLAINABILITY & FRONTEND UI =====
+    subgraph EX[Explainability & UI]
+        P[SHAP Visualization]
+        Q[Streamlit Dashboard]
+        R[Local Audit Logs]
     end
 
     O --> P
@@ -119,13 +112,10 @@ flowchart TD
     P --> S[Risk Intervention]
     Q --> S
 
-    %% ===== MONITORING =====
-    S --> T[Monitoring]
-    T --> U[Alerts]
+    %% ===== MONITORING & FEEDBACK =====
+    S --> T[Session Monitoring]
+    T --> U[UI Alerts]
     U --> V((End))
-
-    %% ===== ORCHESTRATION =====
-    T --> W[Airflow Orchestrator]
 
     %% ===== FEEDBACK LOOPS =====
     T -. Feedback .-> D
