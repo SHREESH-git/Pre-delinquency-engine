@@ -56,69 +56,50 @@ We use a two-pronged approach:
 
 ```mermaid
 flowchart TD
-
-    %% ===== TOP CONTROL =====
-    A[RBAC IAM Audit] --> B[Compliance Engine]
-    B --> D[Streamlit Frontend]
-
-    %% ===== DATA & FEATURE LAYER =====
-    D --> E[Feature Pipeline]
-    E --> F[Feature Store / Local DB]
-
-    %% ===== HYBRID MODELING =====
-    subgraph HM[Hybrid Modeling]
-        direction LR
-        G[Tree Models]
-        H[LSTM Models]
-        
-        G --> I[Cold Start]
-        H --> I
-        I --> J[Ensemble Tuning]
+    %% ===== FRONTEND USER INTERFACE =====
+    subgraph UI["Streamlit User Interface (app.py & pages/)"]
+        A1["Single Customer View"]
+        A2["Batch Portfolio View"]
+        A3["SHAP Explainability View"]
+        A4["Portfolio Risk Analytics"]
     end
 
-    F --> G
-    E --> H
+    %% ===== CORE LOGIC PIPELINE =====
+    B1["Feature Pipeline (feature_engineering.py)"]
+    B2["Predictor Engine (predictor.py)"]
+    B3["Risk & Expected Loss Engine (risk_engine.py)"]
+    B4["Model Loader (model_loader.py)"]
 
-    %% ===== QUALITY & SECURITY =====
-    subgraph QS[Quality & Security]
-        K[Validation]
-        L[Stress Tests]
+    %% ===== MODELS =====
+    subgraph ML["Hybrid Machine Learning Models"]
+        M1["Tree Ensembles (XGBoost, LightGBM, CatBoost)"]
+        M2["Sequential Model (PyTorch LSTM)"]
+        M3["Probability Calibrator (Platt Scaling)"]
     end
 
-    J --> K
-    J --> L
+    %% ===== EXPLAINABILITY & OUTPUTS =====
+    C1["SHAP Explainability (KernelExplainer)"]
+    C2["Matplotlib / Plotly Visuals"]
+    C3["Local Output Storage (shap_plots/)"]
 
-    K --> M[Model Registry / Pickle Store]
-    L --> M
-
-    %% ===== DEPLOYMENT =====
-    M --> N[Local App Execution]
-    N --> O[Secure Local Gateway]
-
-    %% ===== EXPLAINABILITY & FRONTEND UI =====
-    subgraph EX[Explainability & UI]
-        P[SHAP Visualization]
-        Q[Streamlit Dashboard]
-        R[Local Audit Logs]
+    %% ===== DATA SOURCE =====
+    subgraph DATA["Local Data Setup"]
+        D1["Full CSV Datasets (raw/ & processed/)"]
+        D2["Sample CSV Data (sample_data/)"]
     end
 
-    O --> P
-    O --> Q
-    O --> R
-
-    %% ===== BUSINESS ACTION =====
-    P --> S[Risk Intervention]
-    Q --> S
-
-    %% ===== MONITORING & FEEDBACK =====
-    S --> T[Session Monitoring]
-    T --> U[UI Alerts]
-    U --> V((End))
-
-    %% ===== FEEDBACK LOOPS =====
-    T -. Feedback .-> D
-    T -. Retrain .-> E
-
+    %% ===== DATA & CONTROL FLOW =====
+    UI -- "Manual input / CSV upload" --> B1
+    DATA --> B1
+    B1 -- "Engineered Features" --> B2
+    B4 -- "Loads Weights & Configs" --> ML
+    ML --> B2
+    B2 -- "Blended PD Score" --> B3
+    B2 -- "Perturbations & Predictions" --> C1
+    B3 -- "Expected Loss (PD × LGD × EAD) & Risk Buckets" --> UI
+    C1 --> C2
+    C2 --> C3
+    C3 --> UI
 ```
 ---
 
