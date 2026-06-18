@@ -32,18 +32,16 @@ Traditional banking interventions are often "too little, too late," occurring on
 -  Proactive intervention support
 
 ### Machine Learning Value 
-*  **Early Stress Detection:**
-*  **Next Month PD Prediction:**
-*  **Expected Loss = PD × LGD × EAD**
-*  **Cold-Start Customer Handling:**
-*  **SHAP Explainability**
-*  **FastAPI Real-time Scoring:**
+*  **Early Stress Detection:** Evaluates transaction alerts, cash flow trajectories, and credit limits.
+*  **Next Month PD Prediction:** Looks ahead 2–4 weeks using sequential and tabular patterns.
+*  **Expected Loss:** Computes EL = PD × LGD × EAD dynamically.
+*  **Cold-Start Customer Handling:** Graceful fallback for new customers with limited history.
+*  **SHAP Explainability:** Interprets risk drivers per customer to meet compliance and audit requirements.
+*  **Streamlit Dashboard:** Provides an interactive multi-page portal for risk officers.
 
 ---
 
 ## Model Architecture
-
-
 
 ### Hybrid Intelligence
 We use a two-pronged approach:
@@ -126,62 +124,40 @@ flowchart TD
 
 ## Key Features
 ### Secure & Enterprise-Ready
-- RBAC + IAM
-- Audit logging
-- OAuth2 & JWT
-- Rate limiting
+- Role-based views
+- Local audit logging
+- Rate limiting simulation
 
-### Scalable Pipeline
-- Kafka streaming
-- Partitioning and replication
-- Fault-tolerant ingestion
-- Million record scale
-
-### Production MLOps
-- Model registry
-- Approval workflow
-- Versioning & rollback
-- Docker + Kubernetes
-- Auto-scaling
+### Interactive Dashboards
+- Multi-page navigation (Sidebar navigation)
+- Real-time customer profile scoring
+- Interactive Plotly analytics
 
 ### Explainable AI
-- SHAP explanations
-- Logged predictions
-- Risk dashboards
-- Compliance-ready
+- Dynamic SHAP waterfall explanations
+- Visualizing feature contributions (risk pushers and pullers)
+- Compliant decision transparency
 
 ### Continuous Monitoring
-- Performance monitoring
-- Drift detection
-- Security alerts
-- Auto retraining 
+- Expected Loss tracking
+- Stress flag detection
+- Downward spiral trend analysis
 
 ---
 
 ## Technical Approach
 ### Tree-Based Models
-- XGBoost
-- LightGBM
-- CatBoost
-- Capture complex non-linear feature interactions
+- XGBoost, LightGBM, and CatBoost.
+- Captures complex non-linear feature interactions from tabular transaction statistics.
 
 ### Temporal Deep Learning
-- LSTM network 
-- Rolling sequence modeling
-- Short-term behavioral trajectory learning
+- PyTorch LSTM network.
+- Handles rolling sequence modeling over a sliding window to track the rate of financial decay.
 
-### Weighted Ensemble
-- Combines structural and temporal PD
-- Optuna-based hyperparameter tuning
-- Probability calibration for reliable scores
-- Cold Start Handler
-
-### Data & Modeling Strengths
-- Leakage-safe customer-level validation
-- Longitudinal behavioral tracking
-- Cross-product stress propagation
-- Multi-dimensional financial stress signals
-- Portfolio-level early-warning visibility
+### Blended Ensemble
+- Combines static tabular profiles and temporal risk curves.
+- Platt-scaling calibration layer for accurate probability distribution.
+- Cold-start handling for short-history customers.
 
 ---
 
@@ -200,48 +176,44 @@ flowchart TD
 | Layer         | Technology                          |
 | ------------- | ----------------------------------- |
 | ML Models     | XGBoost, LightGBM, CatBoost, Optuna |
-| Deep Learning | LSTM                                |
-| Feature Store | Feast                               |
-| Streaming     | Apache Kafka                        |
-| Orchestration | Apache Airflow                      |
-| Visualization | TypeScript, JavaScript              |
-| Deployment    | Docker, Kubernetes                  |
-
+| Deep Learning | LSTM (PyTorch)                      |
+| Visualization | Plotly, Matplotlib, SHAP            |
+| UI Framework  | Streamlit (Python)                  |
 
 ---
 
 ## Project Structure
 ```bash
 EarlyShield/
-├── app.py
-├── requirements.txt
-├── .gitignore
-├── README.md
-├── __init__.py
-└── PD_Model/
-    ├── content/ 
-    │   └── models/ 
-    │       ├── xgb_model.pkl
-    │       ├── lgb_model.pkl
-    │       ├── cat_model.cbm
-    │       ├── lstm_model_state.pt
-    │       ├── lstm_scaler.pkl
-    │       ├── calibrator.pkl
-    │       ├── tree_feature_columns.pkl
-    │       ├── lstm_feature_columns.pkl
-    │       └── hybrid_config.json
-    │
-    ├── notebook/
-    │   └── model_training.ipynb
-    ├── sample_data/
-    │   ├── financial_stress_sample.csv
-    │   └── feature_engineered_sample.csv
-    ├── shap_plots/
-    ├── feature_engineering.py
-    ├── inference.py
-    ├── model_loader.py
-    ├── predictor.py
-    └── risk_engine.py
+├── app.py                     # Streamlit Main Dashboard Entrypoint
+├── requirements.txt           # Project Dependencies
+├── .gitignore                 # Git ignore rules
+├── README.md                  # Project Documentation
+├── inference.py               # Local inference verification script
+├── feature_engineering.py     # Feature engineering pipeline
+├── model_loader.py            # Model loading utilities
+├── predictor.py               # PD prediction and ensemble blend logic
+├── risk_engine.py             # LGD, EAD, and Expected Loss calculations
+├── content/
+│   └── models/
+│       ├── hybrid_config.json # Calibrator and blending weights config
+│       ├── model_metrics.json # Performance metrics
+│       └── xgb_model.json     # XGBoost schema definition
+├── notebook/
+│   └── model_training.ipynb   # Jupyter training notebook
+├── pages/                     # Dashboard pages
+│   ├── 2_Single_Customer.py
+│   ├── 3_Batch_Prediction.py
+│   ├── 4_SHAP_Explainability.py
+│   └── 5_Portfolio_Risk.py
+├── sample_data/               # Small test datasets
+│   ├── feature_engineered_sample.csv
+│   └── financial_stress_sample.csv
+├── shap_plots/                # Saved SHAP waterfall and summary plots
+└── utils/                     # UI styling and charting helpers
+    ├── charts.py
+    ├── data_utils.py
+    └── styles.py
 ```
 ---
 
@@ -249,19 +221,19 @@ EarlyShield/
 Due to file size limits, the full datasets are not included in this repository. 
 
 **Required Files:**
-1. **Raw Dataset:** `PD_Model/data/raw/financial_stress_full_bank_grade_dataset.csv`
-2. **Engineered Dataset:** `PD_Model/data/processed/feature_engineered_dataset.csv`
+1. **Raw Dataset:** `raw/financial_stress_full_bank_grade_dataset.csv`
+2. **Engineered Dataset:** `processed/feature_engineered_dataset.csv`
 
 > [!TIP]
-> **Sample Data Available**: You can find small sample datasets in the `PD_Model/sample_data/` directory to test the code immediately without downloading the full files.
+> **Sample Data Available**: You can find small sample datasets in the `sample_data/` directory to test the code immediately without downloading the full files.
 
 **Download Instructions:**
-- The datasets are hosted on google drive:
-1) financial_stress_full_bank_grade_dataset.csv: https://drive.google.com/uc?export=download&id=1ZSSO1zixr6jjDfGS_f4ipiMsF-0Yh6vH
-2) feature_engineered_dataset.csv: https://drive.google.com/uc?export=download&id=1XHJpCc6ACdNbzAwk9kgdCp5IERDV65eM
+- The datasets are hosted on Google Drive:
+1. `financial_stress_full_bank_grade_dataset.csv`: [Download Link](https://drive.google.com/uc?export=download&id=1ZSSO1zixr6jjDfGS_f4ipiMsF-0Yh6vH)
+2. `feature_engineered_dataset.csv`: [Download Link](https://drive.google.com/uc?export=download&id=1XHJpCc6ACdNbzAwk9kgdCp5IERDV65eM)
 .
-- Place the raw CSV in `PD_Model/data/raw/`.
-- Place the engineered CSV in `PD_Model/data/processed/`.
+- Place the raw CSV in `raw/`.
+- Place the engineered CSV in `processed/`.
 
 ---
 
@@ -269,12 +241,7 @@ Due to file size limits, the full datasets are not included in this repository.
 The pre-trained models are **not included** in the repository to keep it lightweight.
 
 **Required Model Files:**
-Place the following files in `PD_Model/content/models/`:
-
-## Model Download Links
-
-All models are hosted on Google Drive and loaded dynamically in the app.
-
+Place the following files in `content/models/`:
 
 ### Tree / Ensemble Models
 
@@ -290,8 +257,6 @@ All models are hosted on Google Drive and loaded dynamically in the app.
 - **gb_model.pkl**  
   https://drive.google.com/uc?export=download&id=1xwlYD5U3udl5BSNaEQwfXryEXkA6eA_r
 
-
-
 ### LSTM Models
 
 - **lstm_model_state.pt**  
@@ -303,59 +268,52 @@ All models are hosted on Google Drive and loaded dynamically in the app.
 - **lstm_feature_columns.pkl**  
   https://drive.google.com/uc?export=download&id=1CvpkGyqAP_qiPyg-ioLfWpINiWjcuZbC
 
-
-
 ### Feature Metadata
 
 - **tree_feature_columns.pkl**  
   https://drive.google.com/uc?export=download&id=18fjqjS8lgM0-jDbTCqsHdVYmYnOR7aRI
-
-
 
 ### Calibration Layer
 
 - **calibrator.pkl**  
   https://drive.google.com/uc?export=download&id=1oqsPjnPT1_PzVKzkmaakvmfww_-gEQ7Z
 
-
-### Usage Example
-
-```python
-import requests
-import io
-import joblib
-
-MODEL_URL = "PASTE_LINK_HERE"
-
-response = requests.get(MODEL_URL)
-model = joblib.load(io.BytesIO(response.content))
-
-**Download Instructions:**
-- Ensure `PD_Model/content/models/hybrid_config.json` exists (included in repo).
-```
 ---
 
 ## Getting Started
-1. Install Dependencies
+
+### 1. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-2. Run Local Inference
+### 2. Run Local Inference Verification
+Verify that your environment is working and models load cleanly by running:
+```bash
 python inference.py
+```
 
-3. Launch FastAPI Server
-uvicorn app:app --reload
+### 3. Launch the Streamlit Web Application
+Run the dashboard server locally:
+```bash
+streamlit run app.py
+```
 
-Access the interactive API docs at: http://127.0.0.1:8000/docs
+Streamlit will print the local URL (typically `http://localhost:8501`) where you can interact with the system.
 
-## Example API Response
+---
+
+## Example API Response (Inference Format)
+When running `inference.py`, you will see outputs in the following structured format:
+```json
 {
-  "probability_of_default": 0.3124,
-  "risk_bucket": "MEDIUM",
-  "expected_loss": 15234.21,
+  "probability_of_default": 0.0850,
+  "risk_bucket": "LOW",
+  "expected_loss": 4674.38,
   "lgd": 0.45,
-  "ead": 98000,
-  "signals": ["Salary_Delay_Detected", "Credit_Utilization_Spike"]
+  "ead": 10387.51
 }
+```
 
 ---
 
@@ -369,5 +327,3 @@ Access the interactive API docs at: http://127.0.0.1:8000/docs
 ---
 
 If you find this project useful for your risk modeling research, please consider giving it a star!
-
----
