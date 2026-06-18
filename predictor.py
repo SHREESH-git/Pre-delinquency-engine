@@ -77,7 +77,7 @@ def predict_pd(models, tree_input, lstm_input):
     )[:, 1]
 
 
-    # 
+    
     # USE BASE RATE ADJUSTMENT ONLY IF USING REAL WORLD PORTFOLIO:
     #   r = models["real_world_default_rate"]
     #   pd_floor = config.get("pd_floor", 0.01)
@@ -86,7 +86,7 @@ def predict_pd(models, tree_input, lstm_input):
     #   adjusted = (p * r) / (p * r + (1 - p) * (1 - r))
     #   adjusted = np.clip(adjusted, pd_floor, pd_cap)
     #   return adjusted
-    # 
+  
 
 
     #  SAFETY FLOOR / CAP 

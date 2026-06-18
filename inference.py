@@ -7,7 +7,7 @@ from risk_engine import expected_loss, risk_bucket
 
 # LOAD MODELS
 
-models = load_models("PD_Model/content/models")
+models = load_models("content/models")
 
 
 # LOAD RAW DATA (customer monthly history)
@@ -51,14 +51,14 @@ df_raw = pd.DataFrame([
     }
 ])
 
-
+# -
 # FEATURE ENGINEERING
-
+# -
 df_engineered = engineer_features(df_raw)
 
-
+# -
 # ONE HOT ENCODE (TREE NEEDS IT)
-
+# -
 cat_cols = df_engineered.select_dtypes(include=["object"]).columns.tolist()
 
 df_engineered = pd.get_dummies(
@@ -67,14 +67,14 @@ df_engineered = pd.get_dummies(
     drop_first=True
 )
 
-
+# -
 # PREPARE INPUTS
-
+# -
 tree_input, lstm_input = prepare_inputs(models, df_engineered)
 
-
+# -
 # PREDICT PD
-
+# -
 pd_score = predict_pd(models, tree_input, lstm_input)
 
 print("Predicted PD:", pd_score)
@@ -105,11 +105,11 @@ el, lgd, ead = expected_loss(
 bucket = risk_bucket(pd_score)
 
 print("Risk Bucket:", bucket)
-print("Expected Loss: ₹", round(el,2))
+print("Expected Loss: Rs.", round(el,2))
 
-
+# 
 # SHAP FOR FINAL ENSEMBLE (TREE + LSTM)
-
+# 
 
 import shap
 import matplotlib.pyplot as plt
@@ -118,7 +118,7 @@ import torch
 import pandas as pd
 
 
-# PREPARE TREE BACKGROUND (use all available rows, not just last row) 
+#  PREPARE TREE BACKGROUND (use all available rows, not just last row) 
 # Rebuild a full tree-input frame from the engineered dataframe so SHAP background
 # sampling is representative. This avoids sampling from a single-row `tree_input`.
 tree_cols = models["tree_feature_cols"]
@@ -158,7 +158,7 @@ def ensemble_predict(X):
     if n == 0:
         return np.array([])
 
-    # -------- TREE PD (vectorized) --------
+    #  TREE PD (vectorized) 
     xgb = models["xgb"]
     lgb = models["lgb"]
     cat = models["cat"]
@@ -173,7 +173,7 @@ def ensemble_predict(X):
     s = wx + wl + wc
     tree_pd = (wx * px + wl * pl + wc * pc) / s
 
-    # -------- LSTM PD (replicate base sequence for each perturbed row) --------
+    #  LSTM PD (replicate base sequence for each perturbed row) 
     lstm_model = models["lstm"]
     # lstm_input_base shape: (1, seq_len, feat)
     lstm_batch = np.repeat(lstm_input_base, n, axis=0)
@@ -182,7 +182,7 @@ def ensemble_predict(X):
     with torch.no_grad():
         lstm_pd = lstm_model(tensor_input).cpu().numpy().reshape(-1)
 
-    # -------- HYBRID BLEND & CALIBRATION (same as predict_pd) --------
+    #  HYBRID BLEND & CALIBRATION (same as predict_pd) 
     best_weight = models.get("best_weight", 0.6)
     blended = best_weight * tree_pd + (1 - best_weight) * lstm_pd
 
@@ -300,8 +300,8 @@ plt.tight_layout()
 
 # Save a high-res copy of the waterfall for reports
 try:
-    fig.savefig('shap_waterfall.png', dpi=200, bbox_inches='tight', facecolor='white', edgecolor='none')
-    print("✓ Saved: shap_waterfall.png (waterfall plot with feature contributions)")
+    fig.savefig('shap_plots/shap_waterfall.png', dpi=200, bbox_inches='tight', facecolor='white', edgecolor='none')
+    print("Saved: shap_waterfall.png (waterfall plot with feature contributions)")
 except Exception as e:
     print(f"Error saving waterfall: {e}")
 
@@ -354,8 +354,8 @@ for idx, (feature, row) in enumerate(top_plot.iterrows()):
              bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8, edgecolor='none'))
 
 # Save numeric bar chart
-fig2.savefig('shap_top_features.png', dpi=200, bbox_inches='tight', facecolor='white', edgecolor='none')
-print("✓ Saved: shap_top_features.png (numeric SHAP values)")
+fig2.savefig('shap_plots/shap_top_features.png', dpi=200, bbox_inches='tight', facecolor='white', edgecolor='none')
+print("Saved: shap_top_features.png (numeric SHAP values)")
 plt.show()
 
 print("\nTop 5 Risk Drivers:")

@@ -29,7 +29,7 @@ def risk_bucket(pd):
 
     if pd >= 0.60:
         return "VERY HIGH"
-    elif pd >= 0.40:
+    elif pd >= 0.35:
         return "HIGH"
     elif pd >= 0.15:
         return "MEDIUM"
